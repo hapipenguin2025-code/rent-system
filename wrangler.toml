@@ -1,0 +1,22 @@
+# Cloudflare Worker 設定：一個 Worker 包晒網站（site/）同 WhatsApp webhook（/webhook）
+name = "rent-system"
+main = "worker/src/index.js"
+compatibility_date = "2026-11-01"
+
+[assets]
+directory = "./site"
+binding = "ASSETS"
+# 只有 /webhook 同 /api/* 先行 Worker 程式，其他直接出網頁
+run_worker_first = ["/webhook", "/api/*"]
+
+[observability]
+enabled = true
+
+# ── 自訂網域 ──────────────────────────────────────────────
+# 將 rent.example.com 改做你嘅網域（網域要已經加咗入同一個 Cloudflare account）。
+# 未有網域可以先留住註解，會用 https://rent-system.<你的帳戶>.workers.dev
+# routes = [
+#   { pattern = "rent.example.com", custom_domain = true },
+# ]
+
+# 密碼唔好寫喺度，用：npx wrangler secret put VERIFY_TOKEN（APP_SECRET、GAS_URL、RELAY_SECRET 一樣）
